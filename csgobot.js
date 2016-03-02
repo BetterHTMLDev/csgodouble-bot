@@ -25,6 +25,9 @@ function role(){
 	if(getStatus() == "countdown"){	
 		bet();
 	}
+	if(getStatus() == "waiting"){
+		$('#'+getPanel()+' div.panel-heading').slideDown("slow");
+	}
 	setTimeout(role,1500);	
 
 }
@@ -151,6 +154,7 @@ function bet(){
 			document.getElementById("betAmount").value = betitdouble;  
 			 canbet = 0;
 			$('#' + getPanel() + ' button').click();
+			$('#'+getPanel()+' div.panel-heading').slideUp("slow");
 			console.warn("Der Einsatz wurde verdoppelt. Er liegt jetzt bei " + betitdouble + " Coins");	
 			
 		}
@@ -159,7 +163,7 @@ function bet(){
 			betitdouble = Number(betAmount);
 			 canbet = 0;
 			 $('#' + getPanel() + ' button').click();
-			
+			 $('#'+getPanel()+' div.panel-heading').slideUp("slow");
 			 console.warn("Es wurden " + betAmount + " Coins gesetzt"); 
 		}
 	}			
