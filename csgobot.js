@@ -1,32 +1,52 @@
-//  CONFIG // © Eyk Rehbein 2016
+﻿//  CONFIG // © BetterHTMLDev 2016
 var betAmount = 10 ;  //Wieviele Coins willst du wetten?
-var color = "red"; // Auf welche Farbe willst du setzten?
+var color = "black"; // Auf welche Farbe willst du setzten?
 //
 
 
 var $balance=$("#balance")
 var status = "";
-var last = 1;
+var last = 15;
 var betitdouble = betAmount;
 var canbet = 1;
+var win = "/";
+var gewonnen = 0;
+var verloren = 0;
+var can = 1;
+var versuche = 0;
 function role(){
-  	
+  	info();
 	if(getStatus() == "end"){
 		setLast();
 		canbet = 1;
 		  if(document.getElementById("betAmount").value != ""){	
+					
+			
 			if(getLastColor() == color){
 				console.log("Du hast " + document.getElementById("betAmount").value + " Coins gewonnen\nDein Kontostand: " + getMoney());
+				win = "Gewonnen";
+			   if(can != 0){	
+				gewonnen+=1;
+				can = 0;
+				}
 			}else{
 				console.log("Du hast " + document.getElementById("betAmount").value + " Coins verloren\nDein Kontostand: " + parseInt($balance.text()));
+				win = "Verloren";
+			   if(can != 0){	
+				verloren+=1;
+				can = 0;
+			   }
 			}
 		}			
 	}
 	if(getStatus() == "countdown"){	
 		bet();
+		can = 1;
 	}
 	if(getStatus() == "waiting"){
-		$('#'+getPanel()+' div.panel-heading').slideDown("slow");
+		$('#panel8-14 div.panel-heading').slideDown("slow");
+			  $('#panel0-0 div.panel-heading').slideDown("slow");
+			   $('#panel1-7 div.panel-heading').slideDown("slow");
 	}
 	setTimeout(role,1500);	
 
@@ -54,6 +74,12 @@ function getStatus(){
 function getMoney(){
    return parseInt($balance.text());
 }
+function info(){
+	$('#getbal').hide();
+	$('.btn-group').html("<span style='font-weight:bold;font-size:18px'>Letzte Runde: " + win + "<br>Dein normaler Einsatz: " + betAmount + "<br>Aktueller Einsatz: "+betitdouble+"<br>Gewonnene Runden: "+gewonnen + "<br>Verlorene Runden: " + verloren + "<br>Versuche Verbleibend: " + versuche);
+	
+}
+
 function setLast(){
 	if(getStatus() == "end"){
 		str = document.getElementById("banner").innerHTML;
@@ -134,6 +160,17 @@ function getPanel(){
 		return "panel8-14";
 	}
 }
+function check(){
+	var i = betAmount;
+	var money = Number(getMoney());
+	
+	while(i < money){
+		i=i*2;		
+		versuche+=1;
+		
+	}
+	
+}
 function getLastColor(){
 		if(last == 0){
 			return "green";
@@ -141,8 +178,11 @@ function getLastColor(){
 		if(last > 0 && last <=7){
 			return "red";
 		}
-		if(last > 7){
+		if(last > 7 && last < 15){
 			return "black";
+		}
+		if(last == 15){
+			return color;
 		}
 	
 }
@@ -154,7 +194,9 @@ function bet(){
 			document.getElementById("betAmount").value = betitdouble;  
 			 canbet = 0;
 			$('#' + getPanel() + ' button').click();
-			$('#'+getPanel()+' div.panel-heading').slideUp("slow");
+			$('#panel8-14 div.panel-heading').slideUp("slow");
+			  $('#panel0-0 div.panel-heading').slideUp("slow");
+			   $('#panel1-7 div.panel-heading').slideUp("slow");
 			console.warn("Der Einsatz wurde verdoppelt. Er liegt jetzt bei " + betitdouble + " Coins");	
 			
 		}
@@ -163,17 +205,23 @@ function bet(){
 			betitdouble = Number(betAmount);
 			 canbet = 0;
 			 $('#' + getPanel() + ' button').click();
-			 $('#'+getPanel()+' div.panel-heading').slideUp("slow");
-			 console.warn("Es wurden " + betAmount + " Coins gesetzt"); 
+			 $('#panel8-14 div.panel-heading').slideUp("slow");
+			  $('#panel0-0 div.panel-heading').slideUp("slow");
+			   $('#panel1-7 div.panel-heading').slideUp("slow");
+			
+			console.warn("Es wurden " + betAmount + " Coins gesetzt"); 
 		}
 	}			
-		
-}
+		}
+
 if(Number(getMoney()) != 0){
-	console.warn("Bot wurde gestartet  © 2016 - Eyk Rehbein\nTipp: Zum stoppen die Seite neuladen.");
+	console.warn("Bot wurde gestartet  © 2016 - BetterHTMLDev\nTipp: Zum stoppen die Seite neuladen.");
+	document.getElementById("balance").style.color = "green";
+	check();
 	role();
 	
 }else{
 	console.warn("Bot konnte nicht gestartet werden. Du hast keine Coins.");
 }
+
 
