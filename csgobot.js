@@ -15,7 +15,8 @@ var verloren = 0;
 var can = 1;
 var versuche = 0;
 function role(){
-  	info();
+	check();
+	info();
 	if(getStatus() == "end"){
 		setLast();
 		canbet = 1;
@@ -217,7 +218,7 @@ function bet(){
 if(Number(getMoney()) != 0){
 	console.warn("Bot wurde gestartet  © 2016 - BetterHTMLDev\nTipp: Zum stoppen die Seite neuladen.");
 	document.getElementById("balance").style.color = "green";
-	check();
+	
 	role();
 	
 }else{
