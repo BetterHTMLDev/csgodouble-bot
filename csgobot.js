@@ -1,5 +1,5 @@
 ﻿//  CONFIG // © BetterHTMLDev 2016
-var betAmount = 10 ;  //Wieviele Coins willst du wetten?
+var betAmount = 20 ;  //Wieviele Coins willst du wetten?
 var color = "black"; // Auf welche Farbe willst du setzten?
 //
 
@@ -15,7 +15,7 @@ var verloren = 0;
 var can = 1;
 var versuche = 0;
 function role(){
-	check();
+	
 	info();
 	if(getStatus() == "end"){
 		setLast();
@@ -77,7 +77,7 @@ function getMoney(){
 }
 function info(){
 	$('#getbal').hide();
-	$('.btn-group').html("<span style='font-weight:bold;font-size:18px'>Letzte Runde: " + win + "<br>Dein normaler Einsatz: " + betAmount + "<br>Aktueller Einsatz: "+betitdouble+"<br>Gewonnene Runden: "+gewonnen + "<br>Verlorene Runden: " + verloren + "<br>Versuche Verbleibend: " + versuche);
+	$('.btn-group').html("<span style='font-weight:bold;font-size:18px'>Letzte Runde: " + win + "<br>Dein normaler Einsatz: " + betAmount + "<br>Aktueller Einsatz: "+betitdouble+"<br>Gewonnene Runden: "+gewonnen + "<br>Verlorene Runden: " + verloren + "<br>Versuche insgesamt: " + versuche);
 	
 }
 
@@ -218,7 +218,7 @@ function bet(){
 if(Number(getMoney()) != 0){
 	console.warn("Bot wurde gestartet  © 2016 - BetterHTMLDev\nTipp: Zum stoppen die Seite neuladen.");
 	document.getElementById("balance").style.color = "green";
-	
+	check();
 	role();
 	
 }else{
