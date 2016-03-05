@@ -1,9 +1,10 @@
 ﻿//  CONFIG // © BetterHTMLDev 2016
-var betAmount = 20 ;  //Wieviele Coins willst du wetten?
+var betAmount = 10 ;  //Wieviele Coins willst du wetten?
 var color = "black"; // Auf welche Farbe willst du setzten?
+var style = "normal"; // Stelle auf "black" um ein neues Design zu wählen 
 //
 
-
+var on = true;
 var $balance=$("#balance")
 var status = "";
 var last = 15;
@@ -17,6 +18,7 @@ var versuche = 0;
 function role(){
 	
 	info();
+   if(on == true){	
 	if(getStatus() == "end"){
 		setLast();
 		canbet = 1;
@@ -45,13 +47,20 @@ function role(){
 		can = 1;
 	}
 	if(getStatus() == "waiting"){
-		$('#panel8-14 div.panel-heading').slideDown("slow");
-			  $('#panel0-0 div.panel-heading').slideDown("slow");
-			   $('#panel1-7 div.panel-heading').slideDown("slow");
+		
+	}
 	}
 	setTimeout(role,1500);	
 
 }
+function getBotStatus(){
+	if(on){
+		return "An";
+	}else{
+		return "Aus";
+	}
+}
+
 function getStatus(){
 	str = document.getElementById("banner").innerHTML;
 	if(str.match("Rolling in")){
@@ -77,9 +86,11 @@ function getMoney(){
 }
 function info(){
 	$('#getbal').hide();
-	$('.btn-group').html("<span style='font-weight:bold;font-size:18px'>Letzte Runde: " + win + "<br>Dein normaler Einsatz: " + betAmount + "<br>Aktueller Einsatz: "+betitdouble+"<br>Gewonnene Runden: "+gewonnen + "<br>Verlorene Runden: " + verloren + "<br>Versuche insgesamt: " + versuche);
+	
+	$('.btn-group').html("<span style='font-weight:bold;font-size:18px'>Bot-Status: " + getBotStatus() + " <br>Letzte Runde: " + win + "<br>Dein normaler Einsatz: " + betAmount + "<br>Aktueller Einsatz: "+betitdouble+"<br>Gewonnene Runden: "+gewonnen + "<br>Verlorene Runden: " + verloren + "<br>Versuche insgesamt: " + versuche);
 	
 }
+
 
 function setLast(){
 	if(getStatus() == "end"){
@@ -148,7 +159,16 @@ function setLast(){
 	}
 	
 }
+function turnOff(){
+	if(document.getElementById("checki").checked){
+		on = true;
+	}else{
+		on = false;
+	}
+	
+}
 
+$('.navbar-brand').html("<span id='onoroff'>Bot An-/Ausschalten - <input type='checkbox' id='checki' onClick='turnOff()' checked ></input></span>");
 
 function getPanel(){
 	if(color == "red"){
@@ -195,9 +215,7 @@ function bet(){
 			document.getElementById("betAmount").value = betitdouble;  
 			 canbet = 0;
 			$('#' + getPanel() + ' button').click();
-			$('#panel8-14 div.panel-heading').slideUp("slow");
-			  $('#panel0-0 div.panel-heading').slideUp("slow");
-			   $('#panel1-7 div.panel-heading').slideUp("slow");
+			
 			console.warn("Der Einsatz wurde verdoppelt. Er liegt jetzt bei " + betitdouble + " Coins");	
 			
 		}
@@ -206,19 +224,77 @@ function bet(){
 			betitdouble = Number(betAmount);
 			 canbet = 0;
 			 $('#' + getPanel() + ' button').click();
-			 $('#panel8-14 div.panel-heading').slideUp("slow");
-			  $('#panel0-0 div.panel-heading').slideUp("slow");
-			   $('#panel1-7 div.panel-heading').slideUp("slow");
+			
 			
 			console.warn("Es wurden " + betAmount + " Coins gesetzt"); 
 		}
 	}			
 		}
+var bcolor = "#2E2E2E";
+function designChat(){
+    $('.divchat div').css({'background-color': bcolor ,'border':'solid','color':'white','borderColor':'gray'});
+    $('.divchat').css({'background-color':bcolor});
+    $('.divchat a').css('color','white');
+      $('#tab1').css({'backgroundColor':'#2E2E2E'});
+      $('#pullout').css({'borderRight':'solid'});
+    $('#pullout').css({'backgroundColor':'#2E2E2E'}); 
+    setTimeout(designChat,10);
+    
+}  
+function designSidebar(){
+    $('#sidebar').css({'backgroundColor':bcolor}); 
+    $('#sidebar').css({'border':'solid'});
+}
+function designBackground(){
+      $('body').css({'backgroundColor':'#2E2E2E'}); 
+    
+}   
+function hideT(){
+    $('.noselect').hide();
+    $('.pull-left').hide();
+    $('#betAmount').hide();
+}
+function designNav(){
+    $('.navbar').css('backgroundColor',bcolor);  
+    $('.navbar').css('border','solid');   
+}
+function designAlert(){
+    $('.well p').hide();
+    
+    $('.alert').html("Coins: " + $balance.text());  
+    $('.alert').css({'color':'black','fontWeight':'600'});
+    setTimeout(designAlert,100);
+}
+function designModal(){
+    $('#betAmount').hide();
+    $('.modal-title b').html("Eigene Wette abgeben");   
+    $('.modal-body').html("<div class='modal-body-1'></div><div class='modal-body-2'></div><div class='modal-body-3'>");
+
+    $('.modal-body-1').html('<button type="button"  class="btn btn-default betshort" id="bclear" onclick="betClear()">Clear</button><button type="button" onClick="betLast()" class="btn btn-default betshort" id="blast" >Last</button><button type="button" onclick="betAdd(1)" id="bp1" class="btn btn-default betshort" >+1</button>	<button type="button" onclick="betAdd(10)" id="bp10"class="btn btn-default betshort" >+10</button><button type="button" id="bp100" onclick="betAdd(100)" class="btn btn-default betshort">+100</button><button type="button" id="bp1000" onclick="betAdd(1000)"class="btn btn-default betshort" >+1000</button><button type="button" onclick="betHalf()" id="bphalf" class="btn btn-default betshort" > 1/2 </button><button type="button" id="bpdouble" onclick="betDouble()" class="btn btn-default betshort" >  x2  </button><button id="bpmax" type="button" onclick="betMax() class="btn btn-default betshort">Max</button>');
+    $('.btn-group').css("marginBottom","15px");
+    $('.modal-body-2').html("<input type='text' id='mybetNew' placeholder='Deine Wette...' style='height: 46px;padding: 10px 16px;font-size: 18px;line-height: 1.3333333;border-radius: 6px;width:100%;border:1px solid #ccc;color:#555'></input>");
+    $('.modal-body-3').html("<ul class='ulb'><li class='lib'><button class='btn btn-danger btn-lg btn-block betButton' id='betRed' style='width:100%'><span id='bamount'>0</span> auf Rot</button></li><li class='lib'><button style='width:100%' class='btn btn-success btn-lg btn-block betButton' id='betGreen'><span id='bamount'>0</span> auf Grün</button></li><li class='lib'><button class='btn btn-inverse btn-lg btn-block betButton'style='width:100%' id='betBlack'><span id='bamount'>0</span> auf Schwarz</button></li></ul>");
+    $('.lib').css({'display':'inline-block','width:':'200px','marginLeft':'42px','marginTop':'25px'});
+    
+    $('.modal-footer button btn-success').hide();
+    
+} 
+
+
+
+if(style == "black"){
+	designChat();
+	designSidebar();
+	designBackground();
+	hideT();
+	designNav();
+	designAlert();
+}
 
 if(Number(getMoney()) != 0){
 	console.warn("Bot wurde gestartet  © 2016 - BetterHTMLDev\nTipp: Zum stoppen die Seite neuladen.");
 	document.getElementById("balance").style.color = "green";
-	check();
+	
 	role();
 	
 }else{
