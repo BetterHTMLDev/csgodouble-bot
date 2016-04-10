@@ -1,7 +1,8 @@
 ﻿//  CONFIG // © BetterHTMLDev 2016
-var betAmount = 30 ;  //Wieviele Coins willst du wetten?
-var color = "black"; // Auf welche Farbe willst du setzten?
+var betAmount = 40 ;  //Wieviele Coins willst du wetten?
+var color = "black"// Auf welche Farbe willst du setzten?
 var style = "normal"; // Stelle auf "black" um ein neues Design zu wählen (beta);
+var maximaleVersuche = 5; // Nach dieser Anzahl von Versuchen wird der Bot ausgeschaltet.
 //
 
 var on = true;
@@ -15,11 +16,13 @@ var gewonnen = 0;
 var verloren = 0;
 var can = 1;
 var versuche = 0;
+var ad = maximaleVersuche;
 function role(){
 	
 	info();
    if(on == true){	
-	if(getStatus() == "end"){
+     if(ad != 0){
+	 if(getStatus() == "end"){
 		setLast();
 		canbet = 1;
 		  if(document.getElementById("betAmount").value != ""){	
@@ -31,17 +34,22 @@ function role(){
 			   if(can != 0){	
 				gewonnen+=1;
 				can = 0;
+				ad = maximaleVersuche;
 				}
 			}else{
 				console.log("Du hast " + document.getElementById("betAmount").value + " Coins verloren\nDein Kontostand: " + parseInt($balance.text()));
 				win = "Verloren";
-			   if(can != 0){	
+			if(can != 0){	
+				ad = ad - 1;
 				verloren+=1;
 				can = 0;
 			   }
 			}
 		}			
 	}
+	 }else{
+		alert("Die maximale Anzahl von Versuchen (" + maximaleVersuche + ") wurde erreicht. Lade die Seite neu und füge das Script neu ein.")
+	 }
 	if(getStatus() == "countdown"){	
 		bet();
 		can = 1;
